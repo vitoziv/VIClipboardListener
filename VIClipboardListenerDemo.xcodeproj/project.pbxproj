@@ -16,6 +16,7 @@
 		5FEAF6E11746166F0068D626 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FEAF6E01746166F0068D626 /* Default.png */; };
 		5FEAF6E31746166F0068D626 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FEAF6E21746166F0068D626 /* Default@2x.png */; };
 		5FEAF6E51746166F0068D626 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FEAF6E41746166F0068D626 /* Default-568h@2x.png */; };
+		5FEAF6EE1746168E0068D626 /* VIClipboardListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FEAF6ED1746168E0068D626 /* VIClipboardListener.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,8 @@
 		5FEAF6E01746166F0068D626 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		5FEAF6E21746166F0068D626 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		5FEAF6E41746166F0068D626 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		5FEAF6EC1746168E0068D626 /* VIClipboardListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VIClipboardListener.h; sourceTree = "<group>"; };
+		5FEAF6ED1746168E0068D626 /* VIClipboardListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VIClipboardListener.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +81,7 @@
 		5FEAF6D41746166F0068D626 /* VIClipboardListenerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				5FEAF6EB1746167D0068D626 /* VIClipboardListener */,
 				5FEAF6DD1746166F0068D626 /* AppDelegate.h */,
 				5FEAF6DE1746166F0068D626 /* AppDelegate.m */,
 				5FEAF6D51746166F0068D626 /* Supporting Files */,
@@ -97,6 +101,15 @@
 				5FEAF6E41746166F0068D626 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5FEAF6EB1746167D0068D626 /* VIClipboardListener */ = {
+			isa = PBXGroup;
+			children = (
+				5FEAF6EC1746168E0068D626 /* VIClipboardListener.h */,
+				5FEAF6ED1746168E0068D626 /* VIClipboardListener.m */,
+			);
+			name = VIClipboardListener;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +179,7 @@
 			files = (
 				5FEAF6DB1746166F0068D626 /* main.m in Sources */,
 				5FEAF6DF1746166F0068D626 /* AppDelegate.m in Sources */,
+				5FEAF6EE1746168E0068D626 /* VIClipboardListener.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
