@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+#import "VIClipboardListener.h"
+@interface AppDelegate : UIResponder <UIApplicationDelegate,VIClipboardListenerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
