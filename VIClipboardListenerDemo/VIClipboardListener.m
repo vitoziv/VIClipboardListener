@@ -16,6 +16,7 @@ const NSInteger SLEEP_TIME = 1;
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
+@property Boolean runFlag;
 
 @end
 
@@ -57,11 +58,13 @@ static VIClipboardListener *sharedInstance;
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     NSInteger changeCount = pasteboard.changeCount;
     NSInteger bgTaskTime = BACKGROUND_TIME;
-    while (bgTaskTime >= 0) {
-        //NSLog(@"app in background, left %i second.",bgTaskTime);
+    _runFlag = true;
+    while (bgTaskTime >= 0 && _runFlag == YES) {
+        NSLog(@"app in background, left %i second.",bgTaskTime);
         if (changeCount != pasteboard.changeCount) {
             [[NSNotificationCenter defaultCenter] postNotificationName:UIPasteboardChangedNotification object:nil];
             changeCount = pasteboard.changeCount;
+            NSLog(@"change count :%d" , changeCount);
         }
         [NSThread sleepForTimeInterval:SLEEP_TIME];
         bgTaskTime -= SLEEP_TIME;
@@ -77,8 +80,9 @@ static VIClipboardListener *sharedInstance;
 
 - (void)stopListener {
     //Stop task
-    [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
-    _bgTask = UIBackgroundTaskInvalid;
+    _runFlag = false;	
+//    [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
+//    _bgTask = UIBackgroundTaskInvalid;
     //Remove observer
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
