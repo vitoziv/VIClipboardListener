@@ -8,15 +8,11 @@
 
 #import "VIClipboardListener.h"
 
-const NSInteger BACKGROUND_TIME = 600;//Ten minutes
-const NSInteger SLEEP_TIME = 1;
-
 @interface VIClipboardListener() {
     NSUInteger pasteboardChangeCount;
 }
 
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
-@property Boolean runFlag;
 
 @end
 
@@ -37,52 +33,52 @@ static VIClipboardListener *sharedInstance;
 }
 
 - (void)startListener {
-    [self addObserver];
+    self.isListening = true;
+    
+    //Add observer
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(pasteboardChanged:)
+                                                 name:UIPasteboardChangedNotification
+                                               object:nil];
     
     UIApplication* app = [UIApplication sharedApplication];
-    _bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
-        [app endBackgroundTask:_bgTask];
-        _bgTask = UIBackgroundTaskInvalid;
+    self.bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        [app endBackgroundTask:self.bgTask];
+        self.bgTask = UIBackgroundTaskInvalid;
     }];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self checkPasteBoardCount];
         
         //Stop task
-        [app endBackgroundTask:_bgTask];
-        _bgTask = UIBackgroundTaskInvalid;
+        [app endBackgroundTask:self.bgTask];
+        self.bgTask = UIBackgroundTaskInvalid;
     });
 }
 
 - (void)checkPasteBoardCount {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     NSInteger changeCount = pasteboard.changeCount;
-    NSInteger bgTaskTime = BACKGROUND_TIME;
-    _runFlag = true;
-    while (bgTaskTime >= 0 && _runFlag == YES) {
-        NSLog(@"app in background, left %i second.",bgTaskTime);
+    
+    while ([[UIApplication sharedApplication] backgroundTimeRemaining] >= 0 && self.isListening) {
+        //NSLog(@"app in background, left %f second.",[[UIApplication sharedApplication] backgroundTimeRemaining]);
         if (changeCount != pasteboard.changeCount) {
             [[NSNotificationCenter defaultCenter] postNotificationName:UIPasteboardChangedNotification object:nil];
             changeCount = pasteboard.changeCount;
-            NSLog(@"change count :%d" , changeCount);
+            //NSLog(@"change count :%d" , changeCount);
         }
-        [NSThread sleepForTimeInterval:SLEEP_TIME];
-        bgTaskTime -= SLEEP_TIME;
+        [NSThread sleepForTimeInterval:1];
     }
-}
-
-- (void)addObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(pasteboardChanged:)
-                                                 name:UIPasteboardChangedNotification
-                                               object:nil];
 }
 
 - (void)stopListener {
     //Stop task
-    _runFlag = false;	
-//    [[UIApplication sharedApplication] endBackgroundTask:_bgTask];
-//    _bgTask = UIBackgroundTaskInvalid;
+    self.isListening = false;
+    if (self.bgTask != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.bgTask];
+        self.bgTask = UIBackgroundTaskInvalid;
+    }
+    
     //Remove observer
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

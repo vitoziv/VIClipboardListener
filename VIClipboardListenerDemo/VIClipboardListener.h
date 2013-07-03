@@ -24,4 +24,6 @@
 - (void)startListener;
 - (void)stopListener;
 
+@property Boolean isListening;
+
 @end
